@@ -368,6 +368,7 @@
           this.style.position = '';
           this.style.top = '';
           this.style.left = '';
+          this.style.right = '';
         });
       
       // re-apply saved container styles

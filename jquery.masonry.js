@@ -828,7 +828,7 @@ if ( typeof define === 'function' && define.amd ) {
 })( window );
 
 /**
- * getSize v1.1.7
+ * getWindowSize v1.1.7
  * measure size of elements
  */
 
@@ -893,7 +893,7 @@ function getZeroSize() {
 
 
 
-function defineGetSize( getStyleProperty ) {
+function definegetWindowSize( getStyleProperty ) {
 
 // -------------------------- box sizing -------------------------- //
 
@@ -925,9 +925,9 @@ var isBoxSizeOuter;
 })();
 
 
-// -------------------------- getSize -------------------------- //
+// -------------------------- getWindowSize -------------------------- //
 
-function getSize( elem ) {
+function getWindowSize( elem ) {
   // use querySeletor if elem is string
   if ( typeof elem === 'string' ) {
     elem = document.querySelector( elem );
@@ -1024,20 +1024,20 @@ function mungeNonPixel( elem, value ) {
   return value;
 }
 
-return getSize;
+return getWindowSize;
 
 }
 
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD for RequireJS
-  define( 'get-size/get-size',[ 'get-style-property/get-style-property' ], defineGetSize );
+  define( 'get-size/get-size',[ 'get-style-property/get-style-property' ], definegetWindowSize );
 } else if ( typeof exports === 'object' ) {
   // CommonJS for Component
-  module.exports = defineGetSize( require('get-style-property') );
+  module.exports = definegetWindowSize( require('get-style-property') );
 } else {
   // browser global
-  window.getSize = defineGetSize( window.getStyleProperty );
+  window.getWindowSize = definegetWindowSize( window.getStyleProperty );
 }
 
 })( window );
@@ -1190,7 +1190,7 @@ function toDash( str ) {
 
 // -------------------------- Outlayer definition -------------------------- //
 
-function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty ) {
+function outlayerItemDefinition( EventEmitter, getWindowSize, getStyleProperty ) {
 
 // -------------------------- CSS3 support -------------------------- //
 
@@ -1269,8 +1269,8 @@ Item.prototype.handleEvent = function( event ) {
   }
 };
 
-Item.prototype.getSize = function() {
-  this.size = getSize( this.element );
+Item.prototype.getWindowSize = function() {
+  this.size = getWindowSize( this.element );
 };
 
 /**
@@ -1662,7 +1662,7 @@ if ( typeof define === 'function' && define.amd ) {
   window.Outlayer = {};
   window.Outlayer.Item = outlayerItemDefinition(
     window.EventEmitter,
-    window.getSize,
+    window.getWindowSize,
     window.getStyleProperty
   );
 }
@@ -1757,7 +1757,7 @@ function toDashed( str ) {
 }
 
 
-function outlayerDefinition( eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
+function outlayerDefinition( eventie, docReady, EventEmitter, getWindowSize, matchesSelector, Item ) {
 
 // -------------------------- Outlayer -------------------------- //
 
@@ -1958,12 +1958,12 @@ Outlayer.prototype._init = Outlayer.prototype.layout;
  * logic before any new layout
  */
 Outlayer.prototype._resetLayout = function() {
-  this.getSize();
+  this.getWindowSize();
 };
 
 
-Outlayer.prototype.getSize = function() {
-  this.size = getSize( this.element );
+Outlayer.prototype.getWindowSize = function() {
+  this.size = getWindowSize( this.element );
 };
 
 /**
@@ -1990,7 +1990,7 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
       elem = option;
     }
     // use size of element, if element
-    this[ measurement ] = elem ? getSize( elem )[ size ] : option;
+    this[ measurement ] = elem ? getWindowSize( elem )[ size ] : option;
   }
 };
 
@@ -2292,7 +2292,7 @@ Outlayer.prototype._manageStamp = noop;
 Outlayer.prototype._getElementOffset = function( elem ) {
   var boundingRect = elem.getBoundingClientRect();
   var thisRect = this._boundingRect;
-  var size = getSize( elem );
+  var size = getWindowSize( elem );
   var offset = {
     left: boundingRect.left - thisRect.left - size.marginLeft,
     top: boundingRect.top - thisRect.top - size.marginTop,
@@ -2370,7 +2370,7 @@ Outlayer.prototype.resize = function() {
  * @returns Boolean
  */
 Outlayer.prototype.needsResizeLayout = function() {
-  var size = getSize( this.element );
+  var size = getWindowSize( this.element );
   // check that this.size and size are there
   // IE8 triggers resize on body size change, so they might not be
   var hasSizes = this.size && size;
@@ -2670,7 +2670,7 @@ if ( typeof define === 'function' && define.amd ) {
     window.eventie,
     window.docReady,
     window.EventEmitter,
-    window.getSize,
+    window.getWindowSize,
     window.matchesSelector,
     window.Outlayer.Item
   );
@@ -2709,12 +2709,12 @@ var indexOf = Array.prototype.indexOf ?
 // -------------------------- masonryDefinition -------------------------- //
 
 // used for AMD definition and requires
-function masonryDefinition( Outlayer, getSize ) {
+function masonryDefinition( Outlayer, getWindowSize ) {
   // create an Outlayer layout class
   var Masonry = Outlayer.create('masonry');
 
   Masonry.prototype._resetLayout = function() {
-    this.getSize();
+    this.getWindowSize();
     this._getMeasurement( 'columnWidth', 'outerWidth' );
     this._getMeasurement( 'gutter', 'outerWidth' );
     this.measureColumns();
@@ -2736,7 +2736,7 @@ function masonryDefinition( Outlayer, getSize ) {
       var firstItem = this.items[0];
       var firstItemElem = firstItem && firstItem.element;
       // columnWidth fall back to item of first element
-      this.columnWidth = firstItemElem && getSize( firstItemElem ).outerWidth ||
+      this.columnWidth = firstItemElem && getWindowSize( firstItemElem ).outerWidth ||
         // if first elem has no width, default to size of container
         this.containerWidth;
     }
@@ -2752,12 +2752,12 @@ function masonryDefinition( Outlayer, getSize ) {
     var container = this.options.isFitWidth ? this.element.parentNode : this.element;
     // check that this.size and size are there
     // IE8 triggers resize on body size change, so they might not be
-    var size = getSize( container );
+    var size = getWindowSize( container );
     this.containerWidth = size && size.innerWidth;
   };
 
   Masonry.prototype._getItemLayoutPosition = function( item ) {
-    item.getSize();
+    item.getWindowSize();
     // how many columns does this brick span
     var remainder = item.size.outerWidth % this.columnWidth;
     var mathMethod = remainder && remainder < 1 ? 'round' : 'ceil';
@@ -2810,7 +2810,7 @@ function masonryDefinition( Outlayer, getSize ) {
   };
 
   Masonry.prototype._manageStamp = function( stamp ) {
-    var stampSize = getSize( stamp );
+    var stampSize = getWindowSize( stamp );
     var offset = this._getElementOffset( stamp );
     // get the columns that this stamp affects
     var firstX = this.options.isOriginLeft ? offset.left : offset.right;
@@ -2878,7 +2878,7 @@ if ( typeof define === 'function' && define.amd ) {
   // browser global
   window.Masonry3 = masonryDefinition(
     window.Outlayer,
-    window.getSize
+    window.getWindowSize
   );
 }
 
